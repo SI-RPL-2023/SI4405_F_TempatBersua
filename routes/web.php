@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+use App\Models\User;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,13 +15,20 @@ use App\Http\Controllers\UserController;
 |
 */
 
-
 Route::get('/', function () {
     return view('homepage');
 });
+
 
 Route::get('/register',[UserController::class,'register']);
 Route::post('/register',[UserController::class,'store']);
 Route::get('/login',[UserController::class,'loginPage']);
 Route::post('/login',[UserController::class,'login']);
 Route::put('/logout/{id}', [UserController::class, 'logout']);
+
+// Admin
+Route::get('/admin', function () {
+    $user = User::where('status', 'logged in')->get();
+    return view('adminPage',compact('user'));
+});
+
