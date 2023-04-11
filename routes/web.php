@@ -19,7 +19,6 @@ Route::get('/', function () {
     return view('homepage');
 });
 
-
 Route::get('/register',[UserController::class,'register']);
 Route::post('/register',[UserController::class,'store']);
 Route::get('/login',[UserController::class,'loginPage']);
@@ -31,4 +30,5 @@ Route::get('/admin', function () {
     $user = User::where('status', 'logged in')->get();
     return view('adminPage',compact('user'));
 });
+Route::post('/addAdmin',[UserController::class,'storeAdmin']);
 
