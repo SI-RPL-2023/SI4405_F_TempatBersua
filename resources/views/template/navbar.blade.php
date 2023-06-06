@@ -60,10 +60,33 @@
                         <li><a class="nav-link" href="/explore">Explore</a></li>
                         </li>
                     </ul>
-                    <form class="d-flex" role="search">
+                    <div class="d-flex" role="search">
                         {{-- <input class="me-4 searchnav" type="search" placeholder="Search" aria-label="Search"> --}}
-                        <button class="searchnav" type="submit">Search</button>
-                    </form>
+                        <button class="searchnav" type="submit" data-bs-toggle="modal"
+                            data-bs-target="#search">Search</button>
+                        <form action="/foryou" method="get">
+                            <div class="modal fade" id="search" tabindex="-1" aria-labelledby="exampleModalLabel"
+                                aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Searching Resto</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="mb-3">
+                                                <input type="search" name="search" class="form-control" id="search">
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="submit" class="btn btn-primary">Submit</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
                     <div class="dropdown">
                         <a class="nav-link dropdown-toggle text-light" type="button" data-bs-toggle="dropdown"
                             aria-expanded="false">
