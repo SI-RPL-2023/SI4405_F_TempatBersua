@@ -607,7 +607,7 @@
 
                 if (e.currentTarget.files.length > 5) {
                     alert("File Terlalu Banyak! Maksimal Upload 5");
-                    this.value = "";
+                    this.value = ""; 
                     return false;
                 } else {
                     for (var x in files) {
