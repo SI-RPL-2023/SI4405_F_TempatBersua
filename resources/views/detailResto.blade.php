@@ -6,6 +6,7 @@
     <div class="detailcafe">
         <div class="container-fluid mx-2 mt-4">
             <div class="row">
+                
                 <div class="col-8">
                     {{-- <div class="container-fluid mt-5"> --}}
                     <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="true">
