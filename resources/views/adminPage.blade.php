@@ -6,8 +6,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
 
     <script src="https://code.jquery.com/jquery-3.6.3.min.js"
         integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
@@ -120,24 +120,42 @@
     </header>
 
 
+
+
     <div class="administrator">
         <div class="container-fluid admin mt-5 mb-5">
 
             <div class="row mt-5 mb-5">
-
                 <div class="col-9 ms-3" style=" background-color: beige; border-radius: 10px">
-                    <center>
-                        <div class="mt-3">
-                            <h1>Content Maintenance</h1>
-                            <hr>
-                        </div>
-                        <div class="scrollY" style="height: 65vh;">
-                            <div class="row row-cols-1 row-cols-md-4">
-
+                    <div class="row mt-3 d-flex justify-content-center">
+                        <div class="col-3">
+                            <div class="card" style="width: 18rem;">
+                                <div class="card-body">
+                                    <h5 class="card-title text-center">Total Iklan</h5>
+                                    <h1 class="card-subtitle mb-2 text-muted text-center">{{ $resto->count() }}</h1>
+                                </div>
                             </div>
                         </div>
-                    </center>
-
+                        <div class="col-3">
+                            <div class="card" style="width: 18rem;">
+                                <div class="card-body">
+                                    <h5 class="card-title text-center">Total Iklan Berbayar</h5>
+                                    <h1 class="card-subtitle mb-2 text-muted text-center">{{ $restoBayar->count() }}
+                                    </h1>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="card" style="width: 18rem;">
+                                <div class="card-body">
+                                    <h5 class="card-title text-center">Total Antrian Iklan</h5>
+                                    <h1 class="card-subtitle mb-2 text-muted text-center">{{ $waiting->count() }}</h1>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <h3 class="text-center mt-3">5 Iklan Resto Favorit</h3>
+                    {!! $chart->container() !!}
                 </div>
                 <div class="col">
                     <div class="card mx-auto" style="height: 80vh;">
@@ -149,17 +167,40 @@
                         </div>
                         <div class="scrollY">
                             @foreach ($user as $i)
-                                <div class="row mb-3">
-                                    <div class="col-lg-2 ms-2">
-                                        @if ($i->foto != null)
-                                            <img src="{{ asset('ava/' . $i->foto) }}" class="ava">
-                                        @elseif($i->foto == null)
-                                            <img style="border-radius: 100%; width: 50px; height: 50px; "
-                                                src="https://t3.ftcdn.net/jpg/03/46/83/96/360_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg">
-                                        @endif
+                                <a data-bs-toggle="modal" data-bs-target="#userDetail{{ $i->id }}">
+                                    <div class="row mb-3">
+                                        <div class="col-lg-2 ms-2">
+                                            @if ($i->foto != null)
+                                                <img src="{{ asset('ava/' . $i->foto) }}" class="ava">
+                                            @elseif($i->foto == null)
+                                                <img style="border-radius: 100%; width: 50px; height: 50px; "
+                                                    src="https://t3.ftcdn.net/jpg/03/46/83/96/360_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg">
+                                            @endif
+                                        </div>
+                                        <div class="col-lg ms-2 mt-3">
+                                            <p class="user"><b>{{ $i->username }}</b>
+                                        </div>
                                     </div>
-                                    <div class="col-lg ms-2 mt-3">
-                                        <p class="user"><b>{{ $i->username }}</b>
+                                </a>
+                                <div class="modal fade" id="userDetail{{ $i->id }}" tabindex="-1"
+                                    aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel">User Detail</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <p>Nama : {{ $i->username }}</p>
+                                                <p>Email : {{ $i->email }}</p>
+                                                <p>Role : {{ $i->role }}</p>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary"
+                                                    data-bs-dismiss="modal">Close</button>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             @endforeach
@@ -167,6 +208,235 @@
                     </div>
 
                 </div>
+            </div>
+
+            <div style=" background-color: beige; border-radius: 10px">
+                <center>
+                    <div class="mt-3">
+                        <h1>Content Maintenance</h1>
+                        <hr>
+                    </div>
+                    <div class="scrollY" style="height: 65vh;">
+                        <div class="row row-cols-1 row-cols-md-4">
+                            @foreach ($resto as $dataresto)
+                                <div class="col px-3">
+                                    <a href="#" style="text-decoration: none;">
+                                        <div class="card mb-3" style="height: 20rem;"
+                                            style="border-radius:10px; box-shadow: -5px 5px 10px rgba(128, 128, 128, 0.63);">
+                                            <img src="{{ asset('gambar_resto/' . $dataresto->thumbnail) }}"
+                                                height="150" class="card-img-top" alt="...">
+                                            <div class="card-body">
+                                                <center>
+                                                    <p class="card-title" style="font-size: 1.1vmax; color:black;">
+                                                        <b>{{ $dataresto->namaresto }}</b>
+                                                    </p>
+                                                    <p class="card-text" style="font-size: 0.9vmax; color:black;">
+                                                        {{ $dataresto->address }}</p>
+                                                </center>
+                                                {{-- <a href="#" class="btn btn-primary text-white mt-3">Edit</a> --}}
+                                                <!-- Button trigger modal -->
+                                                <form action="/deleteResto/{{ $dataresto->id }}" method="POST">
+                                                    @csrf
+                                                    @method('delete')
+                                                    <button type="button" class="btn btn-primary mt-3"
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#exampleModal{{ $dataresto->id }}">
+                                                        Edit
+                                                    </button>
+                                                    <button type="submit"
+                                                        class="btn btn-danger text-white mt-3">Delete</button>
+                                                </form>
+                                                <!-- Modal -->
+                                                <div class="modal fade" id="exampleModal{{ $dataresto->id }}""
+                                                    tabindex="-1" aria-labelledby="exampleModalLabel"
+                                                    aria-hidden="true">
+                                                    <div class="modal-dialog modal-fullscreen-lg-down modal-dialog-scrollable"
+                                                        style="margin-top: 15vh">
+                                                        <div class="modal-content">
+                                                            {{-- <div class="modal-header">
+                                                            <h1 class="modal-title fs-5" id="exampleModalLabel">
+                                                                Modal title</h1>
+                                                            <button type="button" class="btn-close"
+                                                                data-bs-dismiss="modal"
+                                                                aria-label="Close"></button>
+                                                        </div> --}}
+                                                            <div class="modal-body">
+                                                                <form action="/updateResto/{{ $dataresto->id }}"
+                                                                    method="POST" enctype="multipart/form-data"
+                                                                    class="form_iklan">
+                                                                    @csrf
+                                                                    <div class="mb-3 mt-2">
+                                                                        <label for="formGroupExampleInput"
+                                                                            class="form-label">Cafe Or Resto
+                                                                            Name</label>
+                                                                        <input type="text" class="form-control"
+                                                                            id="formGroupExampleInput"
+                                                                            placeholder="Tempat Bersua Cafe..."
+                                                                            name="nama_cafe"
+                                                                            value="{{ $dataresto->namaresto }}">
+                                                                    </div>
+
+                                                                    <div class="mb-3">
+                                                                        <label for="formGroupExampleInput"
+                                                                            class="form-label">District</label>
+                                                                        <select name="kawasan" class="form-select"
+                                                                            aria-label="Default select example">
+                                                                            <option selected hidden disabled>Choose
+                                                                                District</option>
+                                                                            @foreach ($data as $i)
+                                                                                <option value="{{ $i['name'] }}">
+                                                                                    {{ $i['name'] }}</option>
+                                                                            @endforeach
+
+                                                                            <option selected
+                                                                                value="{{ $dataresto->district }}">
+                                                                                {{ $dataresto->district }}
+                                                                            </option>
+
+                                                                        </select>
+                                                                    </div>
+                                                                    <div class="mb-3">
+                                                                        <label for="formGroupExampleInput"
+                                                                            class="form-label">Address</label>
+                                                                        <textarea type="text" class="form-control" id="formGroupExampleInput"
+                                                                            placeholder="Jalan Tempat Bersua, Bandung..." name="lokasi_cafe">{{ $dataresto->address }}</textarea>
+                                                                    </div>
+                                                                    <div class="row">
+
+                                                                        <div class="col-md-6">
+                                                                            <label for="inputEmail4"
+                                                                                class="form-label">Open
+                                                                                Time</label>
+                                                                            <input type="time" class="form-control"
+                                                                                name="waktubuka" id="inputEmail4"
+                                                                                value="{{ $dataresto->open }}">
+                                                                        </div>
+                                                                        <div class="col-md-6">
+                                                                            <label for="inputPassword4"
+                                                                                class="form-label">Closed
+                                                                                Time</label>
+                                                                            <input type="time" class="form-control"
+                                                                                name="waktututup" id="inputPassword4"
+                                                                                value="{{ $dataresto->close }}">
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <label for="inputPassword4"
+                                                                        class="form-label mt-3">Price Range</label>
+                                                                    <div class="row">
+
+                                                                        <div class="col-md-6">
+                                                                            <label for="inputEmail4"
+                                                                                class="form-label">Start
+                                                                                From</label>
+                                                                            <div class="input-group mb-2">
+                                                                                <span
+                                                                                    class="input-group-text">Rp.</span>
+                                                                                <input type="text"
+                                                                                    class="form-control"
+                                                                                    name="harga1"
+                                                                                    aria-label="Amount (to the nearest dollar)"
+                                                                                    value="{{ $dataresto->price }}">
+                                                                                <span
+                                                                                    class="input-group-text">.00</span>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-md-6">
+                                                                            <label for="inputPassword4"
+                                                                                class="form-label">Up To</label>
+                                                                            <div class="input-group mb-2">
+                                                                                <span
+                                                                                    class="input-group-text">Rp.</span>
+                                                                                <input type="text"
+                                                                                    class="form-control"
+                                                                                    name="harga2"
+                                                                                    aria-label="Amount (to the nearest dollar)"
+                                                                                    value="{{ $dataresto->upto }}">
+                                                                                <span
+                                                                                    class="input-group-text">.00</span>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="mb-3">
+                                                                        <label for="formGroupExampleInput"
+                                                                            class="form-label">Recommend</label>
+                                                                        <select name="rekomen" class="form-select"
+                                                                            aria-label="Default select example">
+                                                                            <option selected hidden disabled>Choose
+                                                                            </option>
+                                                                            <option value="ya" <?php if ($dataresto->rekomen == 'ya') {
+                                                                                echo 'selected';
+                                                                            } ?>>
+                                                                                Ya
+                                                                            </option>
+                                                                            <option value="tidak"<?php if ($dataresto->rekomen == 'tidak') {
+                                                                                echo 'selected';
+                                                                            } ?>>
+                                                                                Tidak
+                                                                            </option>
+                                                                        </select>
+                                                                    </div>
+
+                                                                    <label for="inputPassword4"
+                                                                        class="form-label mt-3 mb-0">Add
+                                                                        Photo's</label>
+
+
+                                                                    <div class="input-group mt-3 mb-3">
+                                                                        <input class="form-control" id="foto_thumb"
+                                                                            name="foto_thumb" type="file"
+                                                                            accept=".jpg, .png, .jpeg">
+                                                                        <label class="input-group-text"
+                                                                            for="inputGroupFile02"
+                                                                            style="width: 10vw;">Thumbnail</label>
+                                                                    </div>
+                                                                    <div class="prev-thumb"></div>
+
+
+                                                                    <div class="input-group mt-3 mb-3">
+                                                                        <input class="form-control" id="foto_slide"
+                                                                            name="foto_slide" type="file" multiple
+                                                                            accept=".jpg, .png, .jpeg">
+                                                                        <label class="input-group-text"
+                                                                            for="inputGroupFile02"
+                                                                            style="width: 10vw;">
+                                                                            Content</label>
+                                                                    </div>
+                                                                    <div class="prev-slide"></div>
+
+                                                                    <div class="input-group mt-3 mb-3">
+                                                                        <input class="form-control" id="foto_menu"
+                                                                            name="foto_menu" type="file" multiple
+                                                                            accept=".jpg, .png, .jpeg">
+                                                                        <label class="input-group-text"
+                                                                            for="inputGroupFile02"
+                                                                            style="width: 10vw;">
+                                                                            Menu's</label>
+                                                                    </div>
+                                                                    <div class="prev-menu"></div>
+
+
+
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary"
+                                                                    data-bs-dismiss="modal">Close</button>
+                                                                <button type="submit" class="btn btn-primary">Save
+                                                                    changes</button>
+                                                            </div>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+                </center>
             </div>
 
             <center>
@@ -191,7 +461,29 @@
                     </thead>
 
                     <tbody>
-
+                        @foreach ($waiting as $u)
+                            <tr>
+                                <th>{{ $u->namaresto }}</th>
+                                <th>{{ $u->address }}</th>
+                                <th>{{ $u->open }} - {{ $u->close }}</th>
+                                <th>{{ $u->price }} - {{ $u->upto }}</th>
+                                <th>{{ $u->category }}</th>
+                                <th>
+                                    <center>
+                                        <form action="/ubahStatusPost/{{ $u->id }}" method="post">
+                                            @csrf
+                                            <button type="submit"
+                                                class="btn btn-success text-white mx-2">Post</button>
+                                        </form>
+                                        <form action="/ubahStatusDecline/{{ $u->id }}" method="post">
+                                            @csrf
+                                            <button type="submit"
+                                                class="btn btn-danger text-white mx-2">Decline</button>
+                                        </form>
+                                    </center>
+                                </th>
+                            </tr>
+                        @endforeach
                     </tbody>
                 </table>
             </div>
@@ -222,7 +514,8 @@
                                                 aria-label="Default select example">
                                                 <option selected hidden disabled>Choose District</option>
                                                 @foreach ($data as $i)
-                                                    <option value="{{ $i['name'] }}">{{ $i['name'] }}</option>
+                                                    <option value="{{ $i['name'] }}">{{ $i['name'] }}
+                                                    </option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -267,7 +560,8 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <label for="inputPassword4" class="form-label mt-3 mb-0">Add Photo's</label>
+                                        <label for="inputPassword4" class="form-label mt-3 mb-0">Add
+                                            Photo's</label>
 
                                         <div class="input-group mt-3 mb-3">
                                             <input class="form-control" id="foto_thumb" name="foto_thumb"
@@ -295,7 +589,26 @@
                                                 Menu's</label>
                                         </div>
                                         <div class="prev-menus"></div>
-
+                                        <div class="mb-3">
+                                            <label for="Recommended Coffee" class="form-label mt-3">Recommended
+                                                Coffee</label>
+                                            <select class="form-select" name="rekomen_kopi"
+                                                aria-label="Default select example">
+                                                <option selected hidden>Open this select menu</option>
+                                                <option value="iya">Ya</option>
+                                                <option value="tidak">Tidak</option>
+                                            </select>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="Recommended Coffee" class="form-label mt-3">Recommended
+                                                Food</label>
+                                            <select class="form-select" name="rekomen_makanan"
+                                                aria-label="Default select example">
+                                                <option selected hidden>Open this select menu</option>
+                                                <option value="asin">Asin</option>
+                                                <option value="manis">Manis</option>
+                                            </select>
+                                        </div>
                                     </div>
 
                                     <div class="d-grid gap-2 mx-4 mt-3 mb-3">
@@ -608,7 +921,8 @@
                                             style=" color:#c9c8cd; font-family:Arial,sans-serif; font-size:14px; line-height:17px; margin-bottom:0; margin-top:8px; overflow:hidden; padding:8px 0 7px; text-align:center; text-overflow:ellipsis; white-space:nowrap;">
                                             <a href="https://www.instagram.com/p/Ck8F6m4yrHb/?utm_source=ig_embed&amp;utm_campaign=loading"
                                                 style=" color:#c9c8cd; font-family:Arial,sans-serif; font-size:14px; font-style:normal; font-weight:normal; line-height:17px; text-decoration:none;"
-                                                target="_blank">A post shared by Kuliner Bandung (@kulinerbandung)</a>
+                                                target="_blank">A post shared by Kuliner Bandung
+                                                (@kulinerbandung)</a>
                                         </p>
                                     </div>
                                 </blockquote>
@@ -632,8 +946,6 @@
 
         </div>
     </div>
-
-
 
     <script>
         $("#foto_thumb").change(function(e) {
@@ -663,7 +975,7 @@
 
                 }
             }
-        }
+        });
 
         $("#foto_slide").change(function(e) {
             $('.flag_slide').remove();
@@ -724,7 +1036,10 @@
         });
     </script>
 
+    <script src="{{ $chart->cdn() }}"></script>
+
+    {{ $chart->script() }}
+
 </body>
 
 </html>
-

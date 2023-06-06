@@ -68,4 +68,63 @@
 
 
     </div>
+
+
+    @if (session('kuesioner'))
+        <div class="modal fade" id="modalk" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Welcome, {{ Auth::user()->username }} to
+                            Tempat Bersua</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form action="/kuesioner" method="post">
+                        <div class="modal-body">
+                            <p>Apa yang kamu sedang inginkan?</p>
+
+                            @csrf
+                            <p class="mt-3">Kopi</p>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="rekomen_kopi" id="inlineRadio1"
+                                    value="iya">
+                                <label class="form-check-label" for="inlineRadio1">Ya</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="rekomen_kopi" id="inlineRadio2"
+                                    value="tidak">
+                                <label class="form-check-label" for="inlineRadio2">Tidak</label>
+                            </div>
+                            <p class="mt-3">Makanan</p>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="rekomen_makanan" id="inlineRadio1"
+                                    value="asin">
+                                <label class="form-check-label" for="inlineRadio1">Asin</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="rekomen_makanan" id="inlineRadio2"
+                                    value="manis">
+                                <label class="form-check-label" for="inlineRadio2">Manis</label>
+                            </div>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Save changes</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <script>
+            // Saat halaman dimuat ulang
+            window.onload = function() {
+                // Mencari elemen modal berdasarkan ID
+                var modal = new bootstrap.Modal(document.getElementById('modalk'));
+
+                // Menampilkan modal secara otomatis
+                modal.show();
+            }
+        </script>
+    @endif
 @endsection

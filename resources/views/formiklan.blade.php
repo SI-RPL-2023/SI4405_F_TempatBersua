@@ -95,6 +95,26 @@
                                 </div>
                                 <div class="prev-menu"></div>
 
+                                <div class="mb-3">
+                                    <label for="Recommended Coffee" class="form-label mt-3">Recommended
+                                        Coffee</label>
+                                    <select class="form-select" name="rekomen_kopi" aria-label="Default select example">
+                                        <option selected hidden>Open this select menu</option>
+                                        <option value="iya">Ya</option>
+                                        <option value="tidak">Tidak</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="Recommended Coffee" class="form-label mt-3">Recommended
+                                        Food</label>
+                                    <select class="form-select" name="rekomen_makanan"
+                                        aria-label="Default select example">
+                                        <option selected hidden>Open this select menu</option>
+                                        <option value="asin">Asin</option>
+                                        <option value="manis">Manis</option>
+                                    </select>
+                                </div>
+
                                 <div class="form-check mt-3">
                                     <input class="form-check-input" type="radio" name="kategori" value="gratis"
                                         id="flexRadioDefault2" checked>
@@ -113,7 +133,7 @@
                             </div>
 
                             <div class="d-grid gap-2 mx-4 mt-3 mb-3">
-                                <button class="btn btn-primary btn-success" type="submit" name="post">Advertise
+                                <button class="btn btn-primary btn-success" type="submit">Advertise
                                     Now</button>
                             </div>
                         </div>

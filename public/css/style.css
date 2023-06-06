@@ -621,7 +621,8 @@
 
 .artikel {
     width: 100%;
-    height: auto;
+    height: 600px;
+    overflow-y: auto;
 }
 
 .artikel img {
@@ -951,7 +952,7 @@ p .reply {
     background-color: #61616100;
     border: none;
     width: 300px;
-    height: 60vh;
+    height: 10rem;
     border-radius: 40px;
     background-size: cover;
     background-position: center;
@@ -969,7 +970,8 @@ p .reply {
     font-size: 2vmax;
     font-weight: bold;
     width: 15vmax;
-    color: white;
+    color: rgb(255, 255, 255);
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
 
 /* -------------------------------- EXPLORE --------------------------------*/
@@ -983,7 +985,7 @@ p .reply {
             rgba(84, 83, 83, 0.285),
             rgba(0, 0, 0, 0.716)
         ),
-        url("/img/bgkopi.jpg");
+        url("/assets/bgkopi.jpg");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -1124,3 +1126,8 @@ p .reply {
     background-color: #e5e5e5;
 }
 /* -------------------------------- ADMIN --------------------------------*/
+
+#district .dropdown-menu {
+    max-height: 200px;
+    overflow-y: scroll;
+}

@@ -36,7 +36,7 @@
             <center>
                 <div class="cardheader">
 
-                    <img src="img/logo.png">
+                    <img src="{{ asset('assets/logo.png') }}">
                     <br>
                     <h1>Welcome To Tempat Bersua</h1>
                     <!-- <br> -->
@@ -60,7 +60,7 @@
                 <button class="btn btn-primary" type="submit"
                     style="margin-left: 6.5vw; border-radius:50px; width: 15vw; height: 5vh;">Login</button>
                 <p align="center" class=" mt-2 mb-1" style=" font-size: 18px;">Or</p>
-                <a href="/regis" class="btn btn-danger"
+                <a href="/register" class="btn btn-danger"
                     style="margin-left: 6.5vw; border-radius:50px; width: 15vw; height: 5vh;">Create an Account</a>
 
                 <br>

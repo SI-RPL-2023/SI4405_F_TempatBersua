@@ -6,7 +6,6 @@
     <div class="detailcafe">
         <div class="container-fluid mx-2 mt-4">
             <div class="row">
-                
                 <div class="col-8">
                     {{-- <div class="container-fluid mt-5"> --}}
                     <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="true">
@@ -81,7 +80,11 @@
                                 <table class="table table-borderless">
                                     <tr>
                                         <th scope="row" style="width: 8vw;">Rating ☆</th>
-                                        <td>sasa</td>
+                                        @if ($review->count() == 0)
+                                            <td>Belum ada Rating</td>
+                                        @else
+                                            <td>{{ $rating / $review->count() }} / 5</td>
+                                        @endif
                                     </tr>
                                     <tr>
                                         <th scope="row" style="width: 8vw;">Location</th>
@@ -93,7 +96,7 @@
                                     </tr>
                                     <tr>
                                         <th scope="row" style="width: 8vw;">Price</th>
-                                        <td>Rp {{ $detailResto->price }} - Rp {{ $detailResto->upto }}</td>
+                                        <td>@rupiah($detailResto->price) - @rupiah($detailResto->upto)</td>
                                     </tr>
                                 </table>
                             </div>
@@ -112,7 +115,8 @@
                             <div class="modal-dialog" style="margin-top: 13vh; height: 83vh; width: 50vw;">
                                 <div class="modal-content" style="background-color: #ffffff00">
                                     @foreach (json_decode($detailResto->menu) as $gambar)
-                                        <img class="mb-2" src="{{ asset('gambar_resto/' . $gambar) }}" alt="">
+                                        <img class="mb-2" src="{{ asset('gambar_resto/gambar_menu/' . $gambar) }}"
+                                            alt="">
                                     @endforeach
                                 </div>
                             </div>
@@ -130,35 +134,37 @@
                                         </center>
                                     </div>
                                     <div class="scrollY">
-                                        <?php for($i=0; $i<15; $i++){ ?>
-                                        <div class="row mb-3">
-                                            <div class="col-lg-2">
-                                                <img src="img/bgfood.jpg"
-                                                    style="border-radius: 100%; width: 40px; height: 40px; ">
+                                        @foreach ($review as $r)
+                                            <div class="row mb-3">
+                                                <div class="col-lg-2">
+                                                    @if ($r->user->foto != null)
+                                                        <img src="{{ asset('ava/' . $r->user->foto) }}"
+                                                            style="border-radius: 100%; width: 40px; height: 40px; ">
+                                                    @else
+                                                        <img class="profile-pic circle"
+                                                            src="https://t3.ftcdn.net/jpg/03/46/83/96/360_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg"
+                                                            style="border-radius: 100%; width: 40px; height: 40px; ">
+                                                    @endif
+
+                                                </div>
+                                                <div class="col-lg">
+                                                    <p class="reply"><b>{{ $r->user->username }}</b> <span
+                                                            id="dtime">{{ $r->created_at }}</span><br>{{ $r->review }}
+                                                    </p>
+                                                    @foreach (json_decode($r->review_img) as $gambar)
+                                                        <img class="imgreview"
+                                                            src="{{ asset('gambar_resto/gambar_review/' . $gambar) }}"
+                                                            alt="">
+                                                    @endforeach
+
+                                                </div>
                                             </div>
-                                            <?php $time_stamp_dari_db = date('d-m-Y'); ?>
-                                            <div class="col-lg">
-                                                <p class="reply"><b>[nama orang]</b> <span
-                                                        id="dtime"><?php echo $time_stamp_dari_db; ?></span><br>"Love
-                                                    this art,
-                                                    what inspired you to
-                                                    make
-                                                    this<br>
-                                                    &nbsp;"wonderful artwork?"</p>
-                                                <img class="imgreview" src="img/kopi1.png">
-                                                <img class="imgreview" src="img/kopi1.png">
-                                                <img class="imgreview" src="img/kopi1.png">
-                                                <img class="imgreview" src="img/kopi1.png">
-                                                <img class="imgreview" src="img/kopi1.png">
-                                            </div>
-                                        </div>
-                                        <?php } ?>
+                                        @endforeach
 
                                     </div>
+
                                     <div class="addkomen">
                                         <div class="d-flex flex-row add-comment-section" style="height: 5vh;">
-                                            <img class="img-fluid img-responsive rounded-circle " src="img/eskalasi.png"
-                                                width="38">
                                             <input type="text" class="form-control add_komen me-1 ms-1"
                                                 placeholder="Add comment">
 
@@ -183,8 +189,11 @@
                                                             <button type="button" class="btn-close"
                                                                 data-bs-dismiss="modal" aria-label="Close"></button>
                                                         </div>
-                                                        <div class="modal-body">
-                                                            <form action="" method="" class="form_komen">
+                                                        <form action="/detail/review/{{ $detailResto->id }}"
+                                                            method="post" class="form_komen"
+                                                            enctype="multipart/form-data">
+                                                            @csrf
+                                                            <div class="modal-body">
                                                                 <div class="row">
                                                                     <div class="col">
                                                                         <center>
@@ -491,26 +500,25 @@
                                                                             <label for="formGroupExampleInput"
                                                                                 class="form-label">What Makes You
                                                                                 Satisfied?</label>
-                                                                            <textarea name="komen_desc" type="text" class="form-control" id="komen_desc" rows="4" maxlength="500"></textarea>
+                                                                            <textarea name="review" type="text" class="form-control" id="review" rows="4" maxlength="500"></textarea>
                                                                         </div>
 
                                                                         <div class="input-group mb-2">
                                                                             <input class="form-control" id="foto_review"
-                                                                                name="foto_review" type="file" multiple
-                                                                                accept=".jpg, .png, .jpeg">
+                                                                                name="review_img[]" type="file"
+                                                                                multiple accept=".jpg, .png, .jpeg">
                                                                         </div>
                                                                         <div class="upload-prev"></div>
                                                                     </div>
                                                                 </div>
-                                                        </div>
-                                                        <div class="modal-footer">
+                                                            </div>
                                                             <button type="button" class="btn btn-secondary"
                                                                 data-bs-dismiss="modal">Close</button>
                                                             <button type="submit" class="btn btn-primary">Save
                                                                 changes</button>
-                                                        </div>
-                                                        </form>
                                                     </div>
+
+                                                    </form>
                                                 </div>
                                             </div>
                                         </div>
@@ -607,7 +615,7 @@
 
                 if (e.currentTarget.files.length > 5) {
                     alert("File Terlalu Banyak! Maksimal Upload 5");
-                    this.value = ""; 
+                    this.value = "";
                     return false;
                 } else {
                     for (var x in files) {

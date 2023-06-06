@@ -19,28 +19,31 @@
                         <hr class="hr1">
                     </div>
                 </div>
-
-                <div class="row row-cols-1 row-cols-md-5">
-                    @foreach ($resto as $data)
-                        <div class="col px-3">
-                            <a href="/detail/{{ $data->resto->id }}" style="text-decoration: none;">
-                                <div class="card mb-3" style="border-radius:10px; border:none">
-                                    <img src="{{ asset('gambar_resto/' . $data->resto->thumbnail) }}" class="card-img-top"
-                                        alt="..." style="border-radius: 10px">
-                                    <div class="card-body" style="height: 10vh">
-                                        <center>
-                                            <p class="card-title" style="font-size: 1.1vmax; color:black;">
-                                                {{ $data->resto->namaresto }}
-                                            </p>
-                                            <p class="card-text" style="font-size: 0.9vmax; color:black;">
-                                                {{ $data->resto->address }}</p>
-                                        </center>
+                @if ($resto->count() == 0)
+                    <h3 class="text-center">Kamu tidak memiliki wishlist</h3>
+                @else
+                    <div class="row row-cols-1 row-cols-md-5">
+                        @foreach ($resto as $data)
+                            <div class="col px-3">
+                                <a href="/detail/{{ $data->resto->id }}" style="text-decoration: none;">
+                                    <div class="card mb-3" style="border-radius:10px; border:none">
+                                        <img src="{{ asset('gambar_resto/' . $data->resto->thumbnail) }}"
+                                            class="card-img-top" alt="..." style="border-radius: 10px">
+                                        <div class="card-body" style="height: 10vh">
+                                            <center>
+                                                <p class="card-title" style="font-size: 1.1vmax; color:black;">
+                                                    {{ $data->resto->namaresto }}
+                                                </p>
+                                                <p class="card-text" style="font-size: 0.9vmax; color:black;">
+                                                    {{ $data->resto->address }}</p>
+                                            </center>
+                                        </div>
                                     </div>
-                                </div>
-                            </a>
-                        </div>
-                    @endforeach
-                </div>
+                                </a>
+                            </div>
+                        @endforeach
+                    </div>
+                @endif
             </div>
             {{-- <br> --}}
             <div class="row mx-4">
