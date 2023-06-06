@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Kuesioner;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
@@ -54,8 +55,12 @@ class UserController extends Controller
                     if($data->role == 'user'){
                         $data->status = 'logged in';
                         $data->save();
-                        return redirect()->intended('/');
+                        return redirect()->intended('/')->with('kuesioner','Berhasil Login!');
                     }elseif($data->role == 'admin'){
+                        $data->status = 'logged in';
+                        $data->save();
+                        return redirect('/admin');
+                    }elseif($data->role == 'superadmin'){
                         $data->status = 'logged in';
                         $data->save();
                         return redirect('/admin');
@@ -70,7 +75,40 @@ class UserController extends Controller
         $user = User::find($id);
         $user->status ='not logged in';
         $user->save();
+        session()->forget('rekomen_kopi');
+        session()->forget('rekomen_makanan');
         Auth::logout();
         return redirect('/');
     }
-}
+
+    public function update(Request $request,$id)
+    {
+        $user = User::find($id);
+        $poto = "";
+        if ($request->foto) {
+            $poto = $request->foto->getClientOriginalName() . '-' . time()
+                . '.' . $request->foto->extension();
+            $request->foto->move(public_path('ava'), $poto);
+        }elseif ($request -> foto == null){
+            $poto = $user->foto;
+        }
+        if ($request->pw == $request->pwbaru){
+            $user->username=$request->username;
+            $user->foto=$poto;
+            $user->save();
+        }
+
+        return redirect('/foryou');
+    }
+
+    public function profile (){
+        return view('profile');
+    }
+
+    public function kuesioner(Request $request)
+    {
+        session(['rekomen_kopi' => $request->rekomen_kopi]);
+        session(['rekomen_makanan' => $request->rekomen_makanan]);
+        return redirect('/foryou');
+    }
+}   
