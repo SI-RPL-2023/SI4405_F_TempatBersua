@@ -26,8 +26,11 @@ return new class extends Migration
             $table->string('content');
             $table->string('menu');
             $table->string('category');
+            $table->enum('rekomen_kopi',['iya','tidak']);
+            $table->enum('rekomen_makanan',['asin','manis']);
             $table->string('status');
             $table->string('rekomen');
+            $table->integer('jumlah_klik');
             $table->timestamps();
         });
     }

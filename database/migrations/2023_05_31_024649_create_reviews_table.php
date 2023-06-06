@@ -13,15 +13,17 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('personal_access_tokens', function (Blueprint $table) {
+        Schema::create('reviews', function (Blueprint $table) {
             $table->id();
-            $table->morphs('tokenable');
-            $table->string('name');
-            $table->string('token', 64)->unique();
-            $table->text('abilities')->nullable();
-            $table->timestamp('last_used_at')->nullable();
-            $table->timestamp('expires_at')->nullable();
+            $table->foreignId('resto_id');
+            $table->foreignId('user_id');
+            $table->string('review');
+            $table->integer('rating');
+            $table->string('review_img');
             $table->timestamps();
+
+            $table->foreign("user_id")->references("id")->on("users");
+            $table->foreign("resto_id")->references("id")->on("restos");
         });
     }
 
@@ -32,6 +34,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('personal_access_tokens');
+        Schema::dropIfExists('reviews');
     }
 };

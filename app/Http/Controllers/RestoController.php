@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\resto;
+use App\Models\like;
+use App\Models\Review;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class RestoController extends Controller
 {
@@ -12,20 +15,34 @@ class RestoController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $district = 'All Places in Bandung';
-        $resto = resto::where('status', 'approved')->get();
-        $rekomen = resto::where('rekomen','ya')->get();
-        $url = "https://kanglerian.github.io/api-wilayah-indonesia/api/districts/3273.json";
-        $data = json_decode(file_get_contents($url), true);
+        if($request->has('search')){
+            $district = 'All Places in Bandung';
+            $resto = resto::where('namaresto','LIKE','%'.$request->search.'%')->paginate(6);
+            $rekomen = resto::where('rekomen','ya')->where('status','approved')->get();
+            $url = "https://kanglerian.github.io/api-wilayah-indonesia/api/districts/3273.json";
+            $data = json_decode(file_get_contents($url), true);
+        }elseif(session('rekomen_kopi')){
+            $district = 'All Places in Bandung';
+            $resto = resto::where('rekomen_kopi',session('rekomen_kopi'))->where('rekomen_makanan',session('rekomen_makanan'))->where('status','approved')->paginate(6);
+            $rekomen = resto::where('rekomen','ya')->where('status','approved')->get();
+            $url = "https://kanglerian.github.io/api-wilayah-indonesia/api/districts/3273.json";
+            $data = json_decode(file_get_contents($url), true);
+        }else{
+            $district = 'All Places in Bandung';
+            $resto = resto::where('status', 'approved')->paginate(6);
+            $rekomen = resto::where('rekomen','ya')->where('status','approved')->get();
+            $url = "https://kanglerian.github.io/api-wilayah-indonesia/api/districts/3273.json";
+            $data = json_decode(file_get_contents($url), true);
+        }
         return view('foryou', compact('resto','district','rekomen','data'));
     }
 
     public function indexDistrict($district)
     {
-        $resto = resto::where('district','=', $district)->get();
-        $rekomen = resto::where('rekomen','ya')->get();
+        $resto = resto::where('district','=', $district)->paginate(6);
+        $rekomen = resto::where('rekomen','ya')->where('status','approved')->get();
         $url = "https://kanglerian.github.io/api-wilayah-indonesia/api/districts/3273.json";
         $data = json_decode(file_get_contents($url), true);
         return view('foryou', compact('resto','district','rekomen','data'));
@@ -83,6 +100,9 @@ class RestoController extends Controller
         $resto->category = 'gratis';
         $resto->status = 'approved';
         $resto->rekomen = 'tidak';
+        $resto->rekomen_kopi = $request->rekomen_kopi;
+        $resto->rekomen_makanan = $request->rekomen_makanan;
+        $resto->jumlah_klik = 0;
         $resto->save();
 
         return redirect('/admin');
@@ -137,6 +157,9 @@ class RestoController extends Controller
         }elseif($request->kategori){
             $resto->rekomen = 'ya';
         }
+        $resto->rekomen_kopi = $request->rekomen_kopi;
+        $resto->rekomen_makanan = $request->rekomen_makanan;
+        $resto->jumlah_klik = 0;
         $resto->save();
 
         return redirect('/foryou');
@@ -150,7 +173,11 @@ class RestoController extends Controller
      */
     public function show(resto $resto)
     {
-        //
+        // $iklanBerbayar = Resto::where('category', 'berbayar')->where('status','approved')->get();
+        $iklan_terbanyak = Resto::where('status', 'approved')->orderBy('jumlah_klik', 'desc')->paginate(16);
+        $iklan = Resto::where('status', 'approved')->get();
+        // $iklan = Resto::where('status', 'waiting')->get();
+        return view('explore',compact('iklan_terbanyak','iklan'));
     }
 
     public function showDetail(Request $request, $id){
@@ -268,212 +295,35 @@ class RestoController extends Controller
 
         return back();
     }
-}
 
+    public function showLike()
+    {
+        $resto = like::where('user_id',Auth::user()->id)->get();
+        return view('like',compact('resto'));
+    }
 
+    public function like($id)
+    {
 
+        $like = new like();
+        $like->user_id = Auth::user()->id;
+        $like->resto_id = $id;
+        $like->liked = 'yes';
+        $like->save();
 
+        return redirect('/detail/'.$id);
 
+    }
 
+    public function unlike($id)
+    {
+        $like = like::find($id);
+        $like->delete();
 
+        return back();
+    }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-public function addReview(Request $request, $id)
+    public function addReview(Request $request, $id)
     {
         if($request->hasfile('review_img')){
             foreach($request->file('review_img') as $image_content){
@@ -493,3 +343,11 @@ public function addReview(Request $request, $id)
 
         return redirect('/detail/'.$id);
     }
+
+    // public function total_klik($id)
+    // {
+    //     $resto = resto::find($id);
+    //     $resto->jumlah_klik = $resto->jumlah_klik + 1;
+    //     $resto->save();
+    // }
+}
