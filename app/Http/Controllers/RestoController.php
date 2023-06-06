@@ -154,9 +154,14 @@ class RestoController extends Controller
     }
 
     public function showDetail(Request $request, $id){
-        $resto = Resto::all();
-        $detailResto = Resto::find($id);
-        return view('detailResto',compact('detailResto','resto'));
+        $resto = resto::all();
+        $detailResto = resto::find($id);
+        $review = Review::where('resto_id',$id)->get();
+        $rating = Review::sum('rating');
+
+        $detailResto->jumlah_klik = $detailResto->jumlah_klik + 1;
+        $detailResto->save();
+        return view('detailResto',compact('detailResto','resto','review','rating'));
     }
 
     /**
