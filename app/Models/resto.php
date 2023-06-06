@@ -8,4 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class resto extends Model
 {
     use HasFactory;
+    public function like()
+    {
+        return $this->hasOne(like::class);
+    }
+
+    public function review()
+    {
+        return $this->hasMany(Review::class);
+    }
 }

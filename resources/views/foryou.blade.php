@@ -4,7 +4,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"></script>
     <script async src="https://instagram.com/static/bundles/es6/EmbedSDK.js/47c7ec92d91e.js"></script>
 
-    <div class="bg5">
+    <div class="bg5" id="district">
         <div class="container-fluid mx-5 mt-5">
             <div class="pilihan">
                 <div class="dropdown">
@@ -21,34 +21,41 @@
                         @endforeach
                     </ul>
                 </div>
-
-
             </div>
             <div class="row">
                 <div class="col-lg pe-4" style="border-right: 5px solid rgb(197, 141, 73)">
                     <div class="tabel">
                         <div class="row row-cols-1 row-cols-md-3">
-                            @foreach ($resto as $data)
+                            @foreach ($resto as $r)
                                 <div class="col px-5">
-                                    <a href="/detail/{{ $data->id }}" style="text-decoration: none;">
+                                    {{-- <form action="/kunjungan/{{ $r->id }}" method="post" id="my-form">
+                                        @csrf --}}
+                                    <a href="/detail/{{ $r->id }}" style="text-decoration: none;">
                                         <div class="card mb-3"
                                             style="border-radius:10px; box-shadow: -5px 5px 10px grey; color:#080717">
-                                            <img src="{{ asset('gambar_resto/' . $data->thumbnail) }}" class="card-img-top"
+                                            <img src="{{ asset('gambar_resto/' . $r->thumbnail) }}" class="card-img-top"
                                                 height="150" style="object-fit: cover" alt="...">
                                             <div class="card-body" style="height: 15vh">
                                                 <center>
-                                                    <p class="card-title" style="font-size: 1.1vmax;">{{ $data->namaresto }}
+                                                    <p class="card-title" style="font-size: 1.1vmax;">
+                                                        {{ $r->namaresto }}
                                                     </p>
-                                                    <p class="card-text" style="font-size: 0.9vmax;">{{ $data->address }}
+                                                    <p class="card-text" style="font-size: 0.9vmax;">
+                                                        {{ $r->address }}
                                                     </p>
                                                 </center>
                                             </div>
                                         </div>
                                     </a>
+                                    {{-- </form> --}}
                                 </div>
                             @endforeach
+
                         </div>
-                        <a href="explore" class="ms-3"
+                        <div class="d-flex justify-content-center">
+                            {{ $resto->links() }}
+                        </div>
+                        <a href="/explore" class="ms-3"
                             style="font-size: 1.1vmax; color: #080717; text-decoration: none"><b>>> View More</b></a>
                     </div>
                 </div>
@@ -70,7 +77,6 @@
                             @endforeach
                         </div>
                     </div>
-
                 </div>
             </div>
             <br><br>
@@ -128,5 +134,10 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
+    </script>
+    <script>
+        function submitForm() {
+            document.getElementById('my-form').submit();
+        }
     </script>
 @endsection
