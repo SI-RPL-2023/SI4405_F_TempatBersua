@@ -665,6 +665,7 @@
             }
         });
 
+
         $("#foto_slide").change(function(e) {
             $('.flag_slide').remove();
 
@@ -728,3 +729,4 @@
 
 
 </html>
+
