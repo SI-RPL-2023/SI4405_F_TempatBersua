@@ -20,7 +20,7 @@ class DatabaseSeeder extends Seeder
             'email'=>'tempatbersua@gmail.com',
             'password'=>bcrypt('123'),
             'role'=>'superadmin',
-            'status'=>'not logged in',                                                                                                  
+            'status'=>'not logged in',
             'foto'=>'logo.png',
         ]);
         Resto::create([
@@ -311,6 +311,77 @@ class DatabaseSeeder extends Seeder
             'rekomen_makanan'=>'asin',
             'jumlah_klik' => 0
         ]);
-
+        Resto::create([
+            'namaresto'=>'Eskalasi',
+            'district'=>'BUAHBATU',
+            'address' =>'Jl. Cijagra IB No.8, Cijagra, Kec. Lengkong, Kota Bandung, Jawa Barat 40265',
+            'open'=>'08:00:00',
+            'close'=>'22:00:00',
+            'price'=>'30000',
+            'upto'=>'100000',
+            'thumbnail'=>'eskalasi1.jpg',
+            'content'=>'["eskalasi1.jpg", "eskalasi2.jpg", "eskalasi3.jpg"]',
+            'menu'=>'["eskalasimenu.jpg"]',
+            'category'=>'gratis',
+            'status'=>'approved',
+            'rekomen'=>'tidak',
+            'rekomen_kopi'=>'iya',
+            'rekomen_makanan'=>'manis',
+            'jumlah_klik' => 0
+        ]);
+        Resto::create([
+            'namaresto'=>'Seracik',
+            'district'=>'BUAHBATU',
+            'address' =>'Jl. Karawitan No.103, Turangga, Kec. Lengkong, Kota Bandung',
+            'open'=>'08:00:00',
+            'close'=>'22:00:00',
+            'price'=>'30000',
+            'upto'=>'100000',
+            'thumbnail'=>'seracik1.jpg',
+            'content'=>'["seracik1.jpg", "seracik2.jpg", "seracik3.jpg", "seracik4.jpg"]',
+            'menu'=>'["seracikmenu.jpg"]',
+            'category'=>'gratis',
+            'status'=>'approved',
+            'rekomen'=>'tidak',
+            'rekomen_kopi'=>'iya',
+            'rekomen_makanan'=>'asin',
+            'jumlah_klik' => 0
+        ]);
+        Resto::create([
+            'namaresto'=>'Kopitera',
+            'district'=>'LENGKONG',
+            'address' =>'Jl. Burangrang No.14, Burangrang, Kec. Lengkong, Kota Bandung',
+            'open'=>'08:00:00',
+            'close'=>'22:00:00',
+            'price'=>'30000',
+            'upto'=>'100000',
+            'thumbnail'=>'kopitera1.png',
+            'content'=>'["kopitera1.png", "kopitera2.png", "kopitera3.png"]',
+            'menu'=>'["kopiteramenu.jpg"]',
+            'category'=>'gratis',
+            'status'=>'approved',
+            'rekomen'=>'tidak',
+            'rekomen_kopi'=>'tidak',
+            'rekomen_makanan'=>'asin',
+            'jumlah_klik' => 0
+        ]);
+        Resto::create([
+            'namaresto'=>'Kopi Jendral',
+            'district'=>'BANDUNG WETAN',
+            'address' =>'Jl. L. L. R.E. Martadinata No.219, Cihapit, Kec. Bandung Wetan, Kota Bandung',
+            'open'=>'08:00:00',
+            'close'=>'22:00:00',
+            'price'=>'30000',
+            'upto'=>'100000',
+            'thumbnail'=>'jend1.jpg',
+            'content'=>'["jend1.jpg", "jend2.jpg", "jend3.jpg"]',
+            'menu'=>'["jendmenu.jpg"]',
+            'category'=>'gratis',
+            'status'=>'approved',
+            'rekomen'=>'tidak',
+            'rekomen_kopi'=>'tidak',
+            'rekomen_makanan'=>'asin',
+            'jumlah_klik' => 0
+        ]);
     }
 }
